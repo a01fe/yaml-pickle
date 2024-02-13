@@ -1,0 +1,8 @@
+# Ignore Gradle working directories
+/.gradle/
+build/
+
+# Ignore IDE developer specific and working files
+.bloop/
+.metals/
+.vscode/settings.json

@@ -1,0 +1,53 @@
+plugins {
+    id 'scala'
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'io.github.a01fe'
+version = parent.version
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala3-library_3:3.3.1'
+    implementation 'org.snakeyaml:snakeyaml-engine:2.7'
+    implementation 'com.lihaoyi:upickle_3:3.1.4'
+    implementation 'com.lihaoyi:os-lib_3:0.9.3'
+
+    testImplementation 'org.scalameta:munit_3:1.0.0-M11'
+    testImplementation 'org.scalameta:munit-scalacheck_3:1.0.0-M11'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'yaml-pickle'
+            from components.java
+        }
+    }
+//     repositories {
+//         maven {
+//             url = version.endsWith("SNAPSHOT") ? "${easNexusUrl}/maven-snapshots" : "${easNexusUrl}/maven-releases"
+//             credentials {
+//                 username xxx
+//                 password xxx
+//             }
+//         }
+//     }
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
