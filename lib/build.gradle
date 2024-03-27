@@ -12,10 +12,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.scala-lang:scala3-library_3:3.3.1'
+    implementation 'org.scala-lang:scala3-library_3:3.3.3'
     implementation 'org.snakeyaml:snakeyaml-engine:2.7'
-    implementation 'com.lihaoyi:upickle_3:3.1.4'
-    implementation 'com.lihaoyi:os-lib_3:0.9.3'
+    implementation 'com.lihaoyi:upickle_3:3.2.0'
+    // os-lib leaks to api because our option_null upickle profile has an implicit
+    // that references os-lib to serialize os.Relpath
+    api 'com.lihaoyi:os-lib_3:0.9.3'
 
     testImplementation 'org.scalameta:munit_3:1.0.0-M11'
     testImplementation 'org.scalameta:munit-scalacheck_3:1.0.0-M11'
