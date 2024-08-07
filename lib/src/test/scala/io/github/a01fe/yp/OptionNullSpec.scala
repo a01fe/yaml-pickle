@@ -1,6 +1,7 @@
 package io.github.a01fe.yp
 
 import io.github.a01fe.yp.option_null.*
+import os.RelPath
 
 case class OptionNullTest(
   field: Option[String]
@@ -8,6 +9,10 @@ case class OptionNullTest(
 
 case class OptionNullDefaultTest(
   field: Option[String] = None
+) derives ReadWriter
+
+case class RelPathTest(
+  field: os.RelPath
 ) derives ReadWriter
 
 class OptionNullSpec extends munit.FunSuite:
@@ -54,4 +59,16 @@ class OptionNullSpec extends munit.FunSuite:
   test("JSON object with missing field with default None deserializes to None"):
     val expected = OptionNullDefaultTest()
     val observed = read[OptionNullDefaultTest]("""{}""")
+    assertEquals(observed, expected)
+
+  test("case class with RelPath field serializes as string"):
+    val path = "foo/bar"
+    val expected = s"""{"field":"$path"}"""
+    val observed = write(RelPathTest(RelPath(path)))
+    assertEquals(observed, expected)
+
+  test("JSON object with RelPath field deserializes to "):
+    val path = "foo/bar"
+    val observed = read[RelPathTest](s"""{"field":"$path"}""")
+    val expected = RelPathTest(RelPath(path))
     assertEquals(observed, expected)

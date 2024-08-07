@@ -2,6 +2,7 @@ plugins {
     id 'scala'
     id 'java-library'
     id 'maven-publish'
+    // id 'eu.kakde.gradle.sonatype-maven-central-publisher' version '1.0.6'
 }
 
 group = 'io.github.a01fe'
@@ -12,16 +13,16 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.scala-lang:scala3-library_3:3.3.3'
+    implementation 'org.scala-lang:scala3-library_3:3.4.2'
     implementation 'org.snakeyaml:snakeyaml-engine:2.7'
-    implementation 'com.lihaoyi:upickle_3:3.2.0'
+    implementation 'com.lihaoyi:upickle_3:4.0.0'
     // os-lib leaks to api because our option_null upickle profile has an implicit
     // that references os-lib to serialize os.Relpath
-    api 'com.lihaoyi:os-lib_3:0.9.3'
+    api 'com.lihaoyi:os-lib_3:0.10.3'
 
-    testImplementation 'org.scalameta:munit_3:1.0.0-M11'
-    testImplementation 'org.scalameta:munit-scalacheck_3:1.0.0-M11'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.scalameta:munit_3:1.0.0'
+    testImplementation 'org.scalameta:munit-scalacheck_3:1.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -39,15 +40,15 @@ publishing {
             from components.java
         }
     }
-//     repositories {
-//         maven {
-//             url = version.endsWith("SNAPSHOT") ? "${easNexusUrl}/maven-snapshots" : "${easNexusUrl}/maven-releases"
-//             credentials {
-//                 username xxx
-//                 password xxx
-//             }
-//         }
-//     }
+    repositories {
+        maven {
+            url = version.endsWith("SNAPSHOT") ? "${easNexusUrl}/maven-snapshots" : "${easNexusUrl}/maven-releases"
+            credentials {
+                username easNexusUsername
+                password easNexusPassword
+            }
+        }
+    }
 }
 
 tasks.named('test', Test) {
