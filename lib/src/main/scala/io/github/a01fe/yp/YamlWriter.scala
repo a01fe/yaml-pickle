@@ -1,15 +1,16 @@
 package io.github.a01fe.yp
 
+import java.nio.file.StandardOpenOption
+
 import scala.collection.mutable.StringBuilder
 
-import ujson.JsVisitor
 import ujson.*
+import ujson.JsVisitor
 import upickle.core.*
 
-/** Wrap string representation of a Yaml value to indicate whether the value is
- * a scalar that should be rendered inline or a block-style collection that
- * should be rendered in separate lines.
- */
+/** Wrap string representation of a Yaml value to indicate whether the value is a scalar that should be rendered inline
+  * or a block-style collection that should be rendered in separate lines.
+  */
 
 sealed abstract class YamlValue(value: String):
   def get = value
@@ -117,5 +118,10 @@ object YamlWriter:
   def writeString(r: Value): String =
     transform(r, YamlVisitor()).get
 
-  def writeFile(r: Value, f: os.Path): Unit =
-    os.write(f, writeString(r))
+  def writeFile(r: Value, f: os.Path, overwrite: Boolean = true, truncate: Boolean = true): Unit =
+    var flags = List(StandardOpenOption.WRITE)
+    if overwrite then
+      flags = StandardOpenOption.CREATE :: flags
+      if truncate then flags = StandardOpenOption.TRUNCATE_EXISTING :: flags
+    else flags = StandardOpenOption.CREATE_NEW :: flags
+    os.write.write(f, writeString(r), perms = null, flags = flags, offset = 0)

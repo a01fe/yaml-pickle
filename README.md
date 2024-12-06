@@ -6,6 +6,18 @@ It also provides a customized uPickle API that maps `Option[T]` to `null`.
 
 ## Release Notes
 
+### 0.2.0
+
+Change `YamlWriter.writeFile()` so that by default it will overwrite existing files,
+Pass `overwrite = false` to `YamlWriter.writeFile()` to get the old behavior.
+
+Update dependencies:
+
+* Scala 3.5.2
+* snakeyaml-engine 2.8
+* upickle 4.0.2
+* os-lib 0.11.3
+
 ### 0.1.0
 
 Update uPickle to 4.0.0 which introduces breaking changes:
