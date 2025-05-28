@@ -1,6 +1,6 @@
 package io.github.a01fe.yp
 
-import io.github.a01fe.yp.option_null.*
+import io.github.a01fe.yp.common_profile.*
 import os.RelPath
 
 case class OptionNullTest(

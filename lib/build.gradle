@@ -13,16 +13,16 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.scala-lang:scala3-library_3:3.6.3'
+    implementation 'org.scala-lang:scala3-library_3:3.7.0'
     implementation 'org.snakeyaml:snakeyaml-engine:2.9'
-    implementation 'com.lihaoyi:upickle_3:4.1.0'
-    // os-lib leaks to api because our option_null upickle profile has an implicit
+    implementation 'com.lihaoyi:upickle_3:4.2.1'
+    // os-lib leaks to api because our common_profile upickle profile has an implicit
     // that references os-lib to serialize os.Relpath
-    api 'com.lihaoyi:os-lib_3:0.11.3'
+    api 'com.lihaoyi:os-lib_3:0.11.4'
 
-    testImplementation 'org.scalameta:munit_3:1.1.0'
+    testImplementation 'org.scalameta:munit_3:1.1.1'
     testImplementation 'org.scalameta:munit-scalacheck_3:1.1.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -31,6 +31,12 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.additionalParameters += [
+        '-Wunused:all'  // cspell:disable-line
+    ]
 }
 
 publishing {
@@ -44,8 +50,8 @@ publishing {
         maven {
             url = version.endsWith("SNAPSHOT") ? "${easNexusUrl}/maven-snapshots" : "${easNexusUrl}/maven-releases"
             credentials {
-                username easNexusUsername
-                password easNexusPassword
+                username = easNexusUsername
+                password = easNexusPassword
             }
         }
     }

@@ -1,6 +1,7 @@
 package io.github.a01fe.yp
 
 import ujson.*
+
 import io.github.a01fe.yp.*
 
 class YamlWriterSpec extends munit.FunSuite:
